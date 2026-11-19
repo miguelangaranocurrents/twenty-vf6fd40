@@ -133,17 +133,21 @@ export const getEmptyRecordGqlOperationFilter = ({
       }
       break;
     }
-    case 'CURRENCY':
+    case 'CURRENCY': {
+      const currencySubFieldName =
+        compositeFieldName === 'currencyCode' ? 'currencyCode' : 'amountMicros';
+
       emptyRecordFilter = {
         or: [
           {
             [correspondingField.name]: {
-              amountMicros: { is: 'NULL' },
+              [currencySubFieldName]: { is: 'NULL' },
             } as CurrencyFilter,
           },
         ],
       };
       break;
+    }
     case 'FULL_NAME': {
       if (!isSubFieldFilter) {
         const fullNameFilters = generateILikeFiltersForCompositeFields(
